@@ -6,7 +6,7 @@ const loadFromLocalStorage = () => {
     const serializedState = localStorage.getItem("notes");
     return serializedState ? JSON.parse(serializedState) : [];
   } catch (e) {
-    console.error("error fetching from localstorage", e);
+    console.error("Error loading from localStorage", e);
     return [];
   }
 };
@@ -16,7 +16,7 @@ const saveToLocalStorage = (notes) => {
     const serializedState = JSON.stringify(notes);
     localStorage.setItem("notes", serializedState);
   } catch (e) {
-    console.error("error saving to localstorage", e);
+    console.error("Error saving to localStorage", e);
   }
 };
 
@@ -33,10 +33,19 @@ const notesSlice = createSlice({
       state.notes.push(newNote);
       saveToLocalStorage(state.notes);
     },
+    updateNote: (state, action) => {
+      const index = state.notes.findIndex(
+        (note) => note.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.notes[index] = action.payload;
+        saveToLocalStorage(state.notes);
+      }
+    },
   },
 });
 
-export const { addNote } = notesSlice.actions;
+export const { addNote, updateNote } = notesSlice.actions;
 
 export const selectNotes = (state) => state.notes.notes;
 

@@ -1,12 +1,22 @@
-import React from "react";
-import Home from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "@/pages/Home";
+import TemplatesPage from "@/pages/Templates";
+import Navbar from "@/layout/Navbar";
 
-function App() {
+const App = () => {
   return (
-    <div className="flex justify-center w-full min-h-screen mx-auto bg-gray-100">
-      <Home />
-    </div>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-1 mt-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/settings" element={<TemplatesPage />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

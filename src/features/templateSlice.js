@@ -22,6 +22,7 @@ const saveToLocalStorage = (templates) => {
 
 const initialState = {
   templates: loadFromLocalStorage(),
+  activeTemplate: null,
 };
 
 const templateSlice = createSlice({
@@ -44,11 +45,18 @@ const templateSlice = createSlice({
       state.templates = state.templates.filter((t) => t.id !== action.payload);
       saveToLocalStorage(state.templates);
     },
+    setActiveTemplate: (state, action) => {
+      state.activeTemplate = action.payload;
+    },
   },
 });
 
-export const { addTemplate, updateTemplate, deleteTemplate } =
-  templateSlice.actions;
+export const {
+  addTemplate,
+  updateTemplate,
+  deleteTemplate,
+  setActiveTemplate,
+} = templateSlice.actions;
 
 export const selectTemplates = (state) => state.templates.templates;
 
