@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNote, updateNote } from "@/features/notesSlice";
 import { selectTemplates } from "@/features/templateSlice";
 import gptClient, { generatePrompt } from "@/services/gpt.client";
+import DragAndDropUpload from "./DragAndDropUploader";
 
 const Notes = ({ selectedNote, onSave }) => {
   const dispatch = useDispatch();
@@ -78,6 +79,10 @@ const Notes = ({ selectedNote, onSave }) => {
     return template ? template.title : "Unknown Template";
   };
 
+  const handleTranscriptSet = (text) => {
+    setNoteData({ ...noteData, transcript: text });
+  };
+
   return (
     <div className="px-4 space-y-4">
       <section className="flex gap-4">
@@ -99,6 +104,7 @@ const Notes = ({ selectedNote, onSave }) => {
             }
             className="w-full p-2 text-black bg-gray-100 border rounded h-96"
           />
+          <DragAndDropUpload onTranscriptSet={handleTranscriptSet} />
         </div>
         {noteData.output && (
           <div className="flex-1">

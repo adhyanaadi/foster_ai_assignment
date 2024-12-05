@@ -20,8 +20,22 @@ const saveToLocalStorage = (templates) => {
   }
 };
 
+// Default template named SOAP
+const defaultTemplate = {
+  id: uuidv4(),
+  title: "SOAP",
+  sections: [
+    { id: uuidv4(), title: "Subjective" },
+    { id: uuidv4(), title: "Objective" },
+    { id: uuidv4(), title: "Assessment" },
+    { id: uuidv4(), title: "Plan" },
+  ],
+};
+
 const initialState = {
-  templates: loadFromLocalStorage(),
+  templates: loadFromLocalStorage().length
+    ? loadFromLocalStorage()
+    : [defaultTemplate],
   activeTemplate: null,
 };
 
