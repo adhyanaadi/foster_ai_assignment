@@ -47,3 +47,5 @@ Follow these steps to set up the project locally:
    npm run dev
    ```
 3. **Navigate to http://localhost:5173**
+
+NOTE - You will need an .env file also in the parent foler. For that, please whatsapp +918102091322 or mail at aadiadhyan@gmail.com
