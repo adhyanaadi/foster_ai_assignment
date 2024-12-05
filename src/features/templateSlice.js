@@ -21,7 +21,6 @@ const saveToLocalStorage = (templates) => {
 };
 
 const initialState = {
-  // sync store with localstorage
   templates: loadFromLocalStorage(),
 };
 
