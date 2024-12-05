@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateTemplate } from "@/features/templateSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const TemplateEditor = ({ template, onSave }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [sections, setSections] = useState([]);
 
@@ -12,25 +16,26 @@ const TemplateEditor = ({ template, onSave }) => {
   const handleAddSection = () => {
     setSections([
       ...sections,
-      { order: sections.length + 1, title: `Section ${sections.length + 1}` },
+      { id: uuidv4(), title: `Section ${sections.length + 1}` },
     ]);
   };
 
-  const handleUpdateSection = (index, newTitle) => {
-    const updatedSections = [...sections];
-    updatedSections[index].title = newTitle;
+  const handleUpdateSection = (id, newTitle) => {
+    const updatedSections = sections.map((section) =>
+      section.id === id ? { ...section, title: newTitle } : section
+    );
     setSections(updatedSections);
   };
 
-  const handleDeleteSection = (index) => {
-    const updatedSections = sections
-      .filter((_, i) => i !== index)
-      .map((section, i) => ({ ...section, order: i + 1 }));
+  const handleDeleteSection = (id) => {
+    const updatedSections = sections.filter((section) => section.id !== id);
     setSections(updatedSections);
   };
 
   const handleSave = () => {
-    onSave({ id: template?.id, title, sections });
+    const updatedTemplate = { id: template?.id, title, sections };
+    dispatch(updateTemplate(updatedTemplate));
+    onSave(updatedTemplate); // Notify parent if needed
   };
 
   return (
@@ -43,19 +48,19 @@ const TemplateEditor = ({ template, onSave }) => {
         className="w-full p-2 text-black bg-gray-100 border rounded"
       />
       <div className="space-y-2">
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <div
-            key={index}
+            key={section.id}
             className="flex items-center justify-between p-2 border rounded"
           >
             <input
               type="text"
               value={section.title}
-              onChange={(e) => handleUpdateSection(index, e.target.value)}
+              onChange={(e) => handleUpdateSection(section.id, e.target.value)}
               className="w-full p-1 mr-2 text-black bg-gray-100 border rounded"
             />
             <button
-              onClick={() => handleDeleteSection(index)}
+              onClick={() => handleDeleteSection(section.id)}
               className="px-2 py-1 text-white bg-red-500 rounded"
             >
               Delete
